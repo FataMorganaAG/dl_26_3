@@ -9,6 +9,7 @@ from tqdm import tqdm
 def dice(y_true, y_pred):
     return (2 * (y_true * y_pred).sum() + 1e-15) / (y_true.sum() + y_pred.sum() + 1e-15)
 
+
 def general_dice(y_true, y_pred):
     if y_true.sum() == 0:
         if y_pred.sum() == 0:
@@ -18,10 +19,12 @@ def general_dice(y_true, y_pred):
 
     return dice(y_true, y_pred)
 
+
 def jaccard(y_true, y_pred):
     intersection = (y_true * y_pred).sum()
     union = y_true.sum() + y_pred.sum() - intersection
     return (intersection + 1e-15) / (union + 1e-15)
+
 
 def general_jaccard(y_true, y_pred):
     if y_true.sum() == 0:
@@ -32,7 +35,8 @@ def general_jaccard(y_true, y_pred):
 
     return jaccard(y_true, y_pred)
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser()
     arg = parser.add_argument
     arg('-ground_truth_dir', type=str,  required=True, help='path where ground truth images are located')
@@ -60,3 +64,7 @@ if __name__ == '__main__':
 
     print('Dice = ', np.mean(result_dice), np.std(result_dice))
     print('Jaccard = ', np.mean(result_jaccard), np.std(result_jaccard))
+
+
+if __name__ == '__main__':
+    main()
