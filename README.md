@@ -44,9 +44,9 @@ $ python inference_unet.py
 
 График потерь U-Net resnet и U-Net vgg:
 
-<p align="center"><img src="./imgs/resnet_loss.png" alt="detection" width="30%"></p>
+<p align="center"><img src="./imgs/resnet_loss.png" alt="detection" width="50%"></p>
 
-<p align="center"><img src="./imgs/vgg16_loss.png" alt="detection" width="30%"></p>
+<p align="center"><img src="./imgs/vgg16_loss.png" alt="detection" width="50%"></p>
 
 Параметры моделей таблице: 
 
@@ -69,12 +69,12 @@ $ python inference_unet.py
 Примеры результаов работы модели представлены ниже. 
 * U-Net resnet
 Predicted mask:
-<p align="left"><img src="./imgs/resnet_crack_in_large_context_03.jpg" alt="detection" width="30%"></p>
+<p align="left"><img src="./imgs/resnet_crack_in_large_context_03.jpg" alt="detection" width="50%"></p>
 Визуализация:
-<p align="left"><img src="./imgs/res_crack_in_large_context_03.jpg" alt="detection" width="50%"></p>
+<p align="left"><img src="./imgs/res_crack_in_large_context_03.jpg" alt="detection" width="70%"></p>
 
 * U-Net vgg
 Predicted mask:
-<p align="left"><img src="./imgs/vgg_crack_in_large_context_03.jpg" alt="detection" width="30%"></p>
+<p align="left"><img src="./imgs/vgg_crack_in_large_context_03.jpg" alt="detection" width="50%"></p>
 Визуализация:
-<p align="left"><img src="./imgs/vgg16_crack_in_large_context_03.jpg" alt="detection" width="50%"></p>
+<p align="left"><img src="./imgs/vgg16_crack_in_large_context_03.jpg" alt="detection" width="70%"></p>
