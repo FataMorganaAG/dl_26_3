@@ -1,18 +1,19 @@
-import torch
-from torch import nn
-from unet.unet_transfer import UNet16, UNetResNet
-from pathlib import Path
-import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset, random_split
-import torch.nn.functional as F
-from torch.autograd import Variable
-import shutil
-from data_loader import ImgDataSet
 import os
 import argparse
+from pathlib import Path
+
+import torch
 import tqdm
 import numpy as np
 import scipy.ndimage as ndimage
+import torchvision.transforms as transforms
+import shutil
+from torch.autograd import Variable
+from data_loader import ImgDataSet
+from torch.utils.data import DataLoader, random_split
+from torch import nn
+from unet.unet_transfer import UNet16, UNetResNet
+
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -30,6 +31,7 @@ class AverageMeter(object):
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count
+
 
 def create_model(device, type ='vgg16'):
     if type == 'vgg16':
@@ -50,11 +52,13 @@ def create_model(device, type ='vgg16'):
     model.eval()
     return model.to(device)
 
+
 def adjust_learning_rate(optimizer, epoch, lr):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     lr = lr * (0.1 ** (epoch // 30))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
+
 
 def find_latest_model_path(dir):
     model_paths = []
@@ -73,6 +77,7 @@ def find_latest_model_path(dir):
         return model_paths[max_idx]
     else:
         return None
+
 
 def train(train_loader, model, criterion, optimizer, validation, args):
 
@@ -155,6 +160,7 @@ def train(train_loader, model, criterion, optimizer, validation, args):
                 'train_loss': losses.avg
             }, best_model_path)
 
+
 def validate(model, val_loader, criterion):
     losses = AverageMeter()
     model.eval()
@@ -171,10 +177,12 @@ def validate(model, val_loader, criterion):
 
     return {'valid_loss': losses.avg}
 
+
 def save_check_point(state, is_best, file_name = 'checkpoint.pth.tar'):
     torch.save(state, file_name)
     if is_best:
         shutil.copy(file_name, 'model_best.pth.tar')
+
 
 def calc_crack_pixel_weight(mask_dir):
     avg_w = 0.0
@@ -190,7 +198,8 @@ def calc_crack_pixel_weight(mask_dir):
 
     return avg_w / (1.0 - avg_w)
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
     parser.add_argument('-n_epoch', default=10, type=int, metavar='N', help='number of total epochs to run')
     parser.add_argument('-lr', default=0.001, type=float, metavar='LR', help='initial learning rate')
@@ -245,3 +254,7 @@ if __name__ == '__main__':
     model.cuda()
 
     train(train_loader, model, criterion, optimizer, validate, args)
+
+
+if __name__ == '__main__':
+    main()

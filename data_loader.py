@@ -1,9 +1,10 @@
 import os
+
 import numpy as np
-from torch.utils.data import DataLoader, Dataset
 import random
+from torch.utils.data import Dataset
 from PIL import Image
-import matplotlib.pyplot as plt
+
 
 class ImgDataSet(Dataset):
     def __init__(self, img_dir, img_fnames, img_transform, mask_dir, mask_fnames, mask_transform):

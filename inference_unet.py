@@ -1,20 +1,22 @@
-import sys
 import os
-import numpy as np
 from pathlib import Path
+from os.path import join
+
+import numpy as np
+
 import cv2 as cv
-import torch
 import torch.nn.functional as F
-from torch.autograd import Variable
+import gc
 import torchvision.transforms as transforms
-from unet.unet_transfer import UNet16, input_size
 import matplotlib.pyplot as plt
 import argparse
-from os.path import join
 from PIL import Image
-import gc
-from utils import load_unet_vgg16, load_unet_resnet_101, load_unet_resnet_34
+from unet.unet_transfer import input_size
 from tqdm import tqdm
+from torch.autograd import Variable
+
+from utils import load_unet_vgg16, load_unet_resnet_101, load_unet_resnet_34
+
 
 def evaluate_img(model, img):
     input_width, input_height = input_size[0], input_size[1]
@@ -28,6 +30,7 @@ def evaluate_img(model, img):
     mask = F.sigmoid(mask[0, 0]).data.cpu().numpy()
     mask = cv.resize(mask, (img_width, img_height), cv.INTER_AREA)
     return mask
+
 
 def evaluate_img_patch(model, img):
     input_width, input_height = input_size[0], input_size[1]
@@ -70,6 +73,7 @@ def evaluate_img_patch(model, img):
 
     return probability_map
 
+
 def disable_axis():
     plt.axis('off')
     plt.gca().axes.get_xaxis().set_visible(False)
@@ -77,13 +81,26 @@ def disable_axis():
     plt.gca().axes.get_xaxis().set_ticklabels([])
     plt.gca().axes.get_yaxis().set_ticklabels([])
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-img_dir', default='.\\test_imgs', type=str, help='input dataset directory')
     parser.add_argument('-model_path', default='.\\vgg16.pt', type=str, help='trained model path')
     parser.add_argument('-model_type', default='vgg16', type=str, choices=['vgg16', 'resnet101', 'resnet34'])
-    parser.add_argument('-out_viz_dir', default='.\\vgg_out_viz', type=str, required=False, help='visualization output dir')
-    parser.add_argument('-out_pred_dir', default='.\\vgg_out_pred', type=str, required=False,  help='prediction output dir')
+    parser.add_argument(
+        '-out_viz_dir',
+        default='.\\vgg_out_viz',
+        type=str,
+        required=False,
+        help='visualization output dir',
+    )
+    parser.add_argument(
+        '-out_pred_dir',
+        default='.\\vgg_out_pred',
+        type=str,
+        required=False,
+        help='prediction output dir',
+    )
     parser.add_argument('-threshold', type=float, default=0.2, help='threshold to cut off crack response')
     args = parser.parse_args()
 

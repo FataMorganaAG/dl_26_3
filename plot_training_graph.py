@@ -1,11 +1,13 @@
 import argparse
 from pathlib import Path
+
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-if __name__ == '__main__':
+
+def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-model_dir", default='.\\', type=str, required=True)
     ap.add_argument("-title", default='plot', type=str, required=True)
@@ -41,3 +43,7 @@ if __name__ == '__main__':
     plt.title(args.title)
     plt.legend()
     plt.show()
+
+
+if __name__ == '__main__':
+    main()

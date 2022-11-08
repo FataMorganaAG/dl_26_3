@@ -4,7 +4,6 @@ from pathlib import Path
 
 import random
 import numpy as np
-
 import torch
 import tqdm
 from unet.unet_transfer import UNet16, UNetResNet
@@ -26,8 +25,10 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
+
 def cuda(x):
     return x.cuda() if torch.cuda.is_available() else x
+
 
 def write_event(log, step, **data):
     data['step'] = step
@@ -35,6 +36,7 @@ def write_event(log, step, **data):
     log.write(json.dumps(data, sort_keys=True))
     log.write('\n')
     log.flush()
+
 
 def check_crop_size(image_height, image_width):
     """Checks if image size divisible by 32.
@@ -46,6 +48,7 @@ def check_crop_size(image_height, image_width):
     """
     return image_height % 32 == 0 and image_width % 32 == 0
 
+
 def create_model(device, type ='vgg16'):
     assert type == 'vgg16' or type == 'resnet101'
     if type == 'vgg16':
@@ -56,6 +59,7 @@ def create_model(device, type ='vgg16'):
         assert False
     model.eval()
     return model.to(device)
+
 
 def load_unet_vgg16(model_path):
     model = UNet16(pretrained=True)
@@ -72,6 +76,7 @@ def load_unet_vgg16(model_path):
 
     return model
 
+
 def load_unet_resnet_101(model_path):
     model = UNetResNet(pretrained=True, encoder_depth=101, num_classes=1)
     checkpoint = torch.load(model_path)
@@ -87,6 +92,7 @@ def load_unet_resnet_101(model_path):
 
     return model
 
+
 def load_unet_resnet_34(model_path):
     model = UNetResNet(pretrained=True, encoder_depth=34, num_classes=1)
     checkpoint = torch.load(model_path)
@@ -101,6 +107,7 @@ def load_unet_resnet_34(model_path):
     model.eval()
 
     return model
+
 
 def train(args, model, criterion, train_loader, valid_loader, validation, init_optimizer, n_epochs=None, fold=None,
           num_classes=None):

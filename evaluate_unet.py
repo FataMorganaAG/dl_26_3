@@ -1,9 +1,10 @@
 from pathlib import Path
 import argparse
+
 import cv2
 import numpy as np
 from tqdm import tqdm
-import matplotlib.pyplot as plt
+
 
 def dice(y_true, y_pred):
     return (2 * (y_true * y_pred).sum() + 1e-15) / (y_true.sum() + y_pred.sum() + 1e-15)
